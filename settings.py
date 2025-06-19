@@ -35,48 +35,24 @@ servers = [
     }
 ]
 
+# K8S Network Configuration
+global network_cidr
+network_cidr = "192.168.0.0/16"
+# network_cidr = "10.244.0.0/16"
+
 global K3s_Registry
 K3s_Registry = open("./rancher/k3s/registries.yaml").read()
 global kubernetes
 k3s_version = "v1.32.5+k3s1"
 global k3s_arg
-k3s_arg = "--flannel-backend=none --disable-network-policy --disable=traefik --write-kubeconfig-mode=644"
+k3s_arg = "--flannel-backend=none --cluster-cidr={} --disable-network-policy --disable=traefik --write-kubeconfig-mode=644".format(network_cidr)
 global Node_Join
-
-
-global containerd
-containerd = "1.7.8"
-global runc
-runc = "1.1.10"
-global kubernetes_minor
-kubernetes_minor = "1.28"
-global kubernetes_semantic
-kubernetes_semantic = "1.1"
-
-
-
-# K8S Network Configuration
-global network_cidr
-network_cidr = "10.244.0.0/16"
 
 # https://docs.tigera.io/calico/latest/getting-started/kubernetes/self-managed-onprem/onpremises#install-calico
 global calico_version
-calico_version = "v3.26.4"
-global tigera_operator_local_path
-tigera_operator_local_path = "./network/calico_{}/tigera-operator.yaml".format(calico_version)
-global tigera_operator_remote_path
-tigera_operator_remote_path = "/etc/kubernetes/network/calico/tigera-operator.yaml"
+calico_version = "v3.30.1"
 global custom_resources
 custom_resources = open("./network/calico_{}/custom-resources.yaml".format(calico_version)).read()
-
-# K8S Metrics
-# https://github.com/kubernetes-sigs/metrics-server
-# kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-# kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.6.4/components.yaml
-global metrics_server_version
-metrics_server_version = "v0.6.4"
-global metrics_server_components
-metrics_server_components = open("./Metrics-Server/{}/components.yaml".format(metrics_server_version)).read()
 
 
 global COLOR

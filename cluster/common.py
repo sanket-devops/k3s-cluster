@@ -6,7 +6,6 @@ from cluster.modules.ssh import ssh_conn
 
 
 def Setup_All_Nodes(servers):
-    # print(settings.COLOR["BLUE"], "Testing Green!!", settings.COLOR["ENDC"])
     print(settings.COLOR["GREEN"], "Step 1:\n##################################################{ Common Setup Started On All Nodes }##################################################\n", settings.COLOR["ENDC"])
     for server in servers:
         id = server["id"]
@@ -43,13 +42,6 @@ def Setup_All_Nodes(servers):
                         print("Host entery already added...")
         Set_Hosts()
 
-        # def Swap_Off():
-        #     print(settings.COLOR["BLUE"], "\n>>>>>>>>>>>>>>>>>>>>( Swap Off )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host), settings.COLOR["ENDC"])
-        #     commandsArr = ["sed -i '/swap/d' /etc/fstab", "swapoff -a"]
-        #     res = ssh_conn(host, username, password, sshKey, commandsArr)
-        #     print("Disable and turn off SWAP")
-        # Swap_Off()
-
         def Firewall_Disable():
             print(settings.COLOR["BLUE"], "\n>>>>>>>>>>>>>>>>>>>>( Firewall Disable )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host), settings.COLOR["ENDC"])
             commandsArr = ["systemctl disable --now ufw"]
@@ -75,35 +67,6 @@ def Setup_All_Nodes(servers):
             res = ssh_conn(host, username, password, sshKey, commandsArr)
             print("Kernal modules Loaded...")
         Kernal_Modules()
-
-        # def Install_Runtime():
-        #     print(settings.COLOR["BLUE"], "\n>>>>>>>>>>>>>>>>>>>>( Install Container Runtime )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host), settings.COLOR["ENDC"])
-        #     commandsArr = [
-        #         "wget https://github.com/containerd/containerd/releases/download/v{}/containerd-{}-linux-amd64.tar.gz -O containerd-{}-linux-amd64.tar.gz".format(settings.containerd, settings.containerd, settings.containerd),
-        #         "tar Cxzvf /usr/local containerd-{}-linux-amd64.tar.gz".format(settings.containerd),
-        #         "wget -P /etc/systemd/system https://raw.githubusercontent.com/containerd/containerd/main/containerd.service",
-        #         "mkdir /etc/containerd",
-        #         "echo '{}' > /etc/containerd/config.toml".format(settings.Containerd_Config.replace("localhost", server["local-registry"])),
-        #         "systemctl daemon-reload && systemctl enable --now containerd && systemctl restart containerd",
-        #         "wget https://github.com/opencontainers/runc/releases/download/v{}/runc.amd64 -O runc.amd64".format(settings.runc),
-        #         "install -m 755 runc.amd64 /usr/local/sbin/runc"
-        #         ]
-        #     res = ssh_conn(host, username, password, sshKey, commandsArr)
-        #     print("Container Runtime Installed...")
-        # Install_Runtime()
-
-        # def Install_Kubernetes():
-        #     print(settings.COLOR["BLUE"], "\n>>>>>>>>>>>>>>>>>>>>( Install Kubernetes Components )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host), settings.COLOR["ENDC"])
-        #     commandsArr = [
-        #         "curl -fsSL https://pkgs.k8s.io/core:/stable:/v{}/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg".format(settings.kubernetes_minor),
-        #         "echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v{}/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list".format(settings.kubernetes_minor),
-        #         "dpkg --configure -a",
-        #         "apt-get update",
-        #         "apt-get install -y kubeadm={}-{} kubelet={}-{} kubectl={}-{}".format(settings.kubernetes, settings.kubernetes_semantic, settings.kubernetes, settings.kubernetes_semantic, settings.kubernetes, settings.kubernetes_semantic)
-        #         ]
-        #     res = ssh_conn(host, username, password, sshKey, commandsArr)
-        #     print("Kubernetes Components Installed...")
-        # Install_Kubernetes()
 
         def Reboot_Server():
             print(settings.COLOR["BLUE"], "\n>>>>>>>>>>>>>>>>>>>>( Reboot Server )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host), settings.COLOR["ENDC"])

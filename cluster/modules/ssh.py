@@ -38,6 +38,7 @@ def ssh_conn(host, username, password, sshKey, commandsArr):
             temp = []
             ssh_stdin, ssh_stdout, ssh_stderr = client.exec_command(command)
             for line in ssh_stdout:
+                # Print command output
                 print(line)
                 nRemove = line.strip('\n')
                 temp.append(nRemove)
