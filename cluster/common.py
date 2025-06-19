@@ -76,7 +76,6 @@ def Setup_All_Nodes(servers):
             res = ssh_conn(host, username, password, sshKey, commandsArr)
             time.sleep(5)
             print("Server Rebooting...\n")
-        Reboot_Server()
 
         def Check_Server_Back_Online():
             online  = False
@@ -98,5 +97,22 @@ def Setup_All_Nodes(servers):
                 else:
                     print(counter, ".: Connecting...")
                     time.sleep(10)
-        Check_Server_Back_Online()
+
+        def Check_K3s_Status():
+            print(settings.COLOR["BLUE"], "\n>>>>>>>>>>>>>>>>>>>>( K3S Status )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host), settings.COLOR["ENDC"])
+            commandsArr = [
+                'if systemctl is-active --quiet k3s; then echo "k3s-active"; '
+                'elif systemctl is-active --quiet k3s-agent; then echo "k3s-agent-active"; '
+                'else echo "neither k3s nor k3s-agent is active"; fi'
+                ]
+            res = ssh_conn(host, username, password, sshKey, commandsArr)
+            for commands in res:
+                for output in commands:
+                    if output in ["k3s-active", "k3s-agent-active"]:
+                        print(output)
+                    else:
+                        Reboot_Server()
+                        Check_Server_Back_Online()
+        Check_K3s_Status()
+
     print(settings.COLOR["GREEN"], "\n##################################################{ Common Setup Finished On All Nodes }##################################################\n", settings.COLOR["ENDC"])
