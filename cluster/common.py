@@ -12,7 +12,16 @@ def Setup_All_Nodes(servers):
         host = server["host"]
         username = server["username"]
         password = server["password"]
-        sshKey = server["keyFilePath"]
+        sshKey = None
+        for path in server["keyFilePaths"]:
+            expanded = os.path.expanduser(path)
+            if os.path.exists(expanded):
+                sshKey = expanded
+                break  # found the first usable key
+        if not sshKey:
+            raise FileNotFoundError(
+                f"No valid SSH key found in {server['keyFilePaths']}"
+            )
         hostname = server["hostname"]
         role = server["role"]
         master = server["master"]

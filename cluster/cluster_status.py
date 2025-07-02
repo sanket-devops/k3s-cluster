@@ -12,7 +12,16 @@ def Cluster_Status(servers):
         host = server["host"]
         username = server["username"]
         password = server["password"]
-        sshKey = server["keyFilePath"]
+        sshKey = None
+        for path in server["keyFilePaths"]:
+            expanded = os.path.expanduser(path)
+            if os.path.exists(expanded):
+                sshKey = expanded
+                break  # found the first usable key
+        if not sshKey:
+            raise FileNotFoundError(
+                f"No valid SSH key found in {server['keyFilePaths']}"
+            )
         hostname = server["hostname"]
         role = server["role"]
         master = server["master"]
@@ -21,8 +30,7 @@ def Cluster_Status(servers):
 
             def K8S_Status():
                 print(settings.COLOR["BLUE"], "\n>>>>>>>>>>>>>>>>>>>>( Kubernetes Cluster Status )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host), settings.COLOR["ENDC"])
-                commandsArr = ["kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml wait --for=condition=ready --timeout=120s --all pod -n calico-system",
-                               "kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml wait --for=condition=ready --timeout=120s --all pod -n calico-apiserver", 
+                commandsArr = ["cilium status --wait",
                                "kubectl get nodes -o wide",
                                "kubectl get all --all-namespaces -o wide"]
 
