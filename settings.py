@@ -2,7 +2,7 @@ global servers
 servers = [
     {
         "id": 1,
-        "host": "10.0.2.101",
+        "host": "192.168.56.101",
         "username": "root",
         "password": "admin",
         "keyFilePaths": [
@@ -10,13 +10,13 @@ servers = [
             "~/.ssh/id_rsa"
         ],
         "hostname": "master",
-        "local-registry": "10.0.2.101",
+        "local-registry": "192.168.56.101",
         "role": "master",
         "master": True
     },
     {
         "id": 2,
-        "host": "10.0.2.102",
+        "host": "192.168.56.102",
         "username": "root",
         "password": "admin",
         "keyFilePaths": [
@@ -24,13 +24,13 @@ servers = [
             "~/.ssh/id_rsa"
         ],
         "hostname": "node1",
-        "local-registry": "10.0.2.101",
+        "local-registry": "192.168.56.101",
         "role": "worker",
         "master": False
     },
     {
         "id": 3,
-        "host": "10.0.2.103",
+        "host": "192.168.56.103",
         "username": "root",
         "password": "admin",
         "keyFilePaths": [
@@ -38,7 +38,7 @@ servers = [
             "~/.ssh/id_rsa"
         ],
         "hostname": "node2",
-        "local-registry": "10.0.2.101",
+        "local-registry": "192.168.56.101",
         "role": "worker",
         "master": False
     }
@@ -47,9 +47,9 @@ servers = [
 # K8S Network Configuration
 global network_cidr
 # Flannel network cidr
-# network_cidr = "10.244.0.0/16"
+network_cidr = "10.244.0.0/16"
 # Calico network cidr 
-network_cidr = "192.168.0.0/16"
+# network_cidr = "192.168.0.0/16"
 # Cilium network cidr
 # network_cidr = "10.0.0.0/16"
 

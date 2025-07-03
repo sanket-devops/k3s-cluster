@@ -28,6 +28,17 @@ openssl rsa -in C:\Users\sanket\.ssh\id_rsa -pubout -out C:\Users\sanket\.ssh\id
 ssh-keygen -i -m PKCS8 -f C:\Users\sanket\.ssh\id_rsa_pub.pem > C:\Users\sanket\.ssh\id_rsa.pub
 ```
 
+### Allow network ranges
+```shell
+sudo nano /etc/vbox/networks.conf
+
+# Add below network
+* 192.168.56.0/21
+* 10.0.2.0/24
+
+# Restart Virtual box network
+sudo systemctl restart vboxdrv
+```
 
 
 **1. Remove the broken box:**
