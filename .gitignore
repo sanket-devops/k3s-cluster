@@ -8,7 +8,6 @@
 .tox/
 
 .vagrant
-Vagrantfile
 !tests/vagrantfiles/**/Vagrantfile
 
 # Ingore python packaging files/dirs
